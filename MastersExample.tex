@@ -9,7 +9,7 @@
 %% \documentclass[MACS,english,a4paper,oneside,12pt]{ntnuthesis/ntnuthesis}
 
 %% with the change to using DAIM we have a new option. include DAIM after english below removes the front page material so that you can then submit in the DAIM system. If you are wanting the front material remove DAIM and make sure you fill in the DaimData.tex file.
-\documentclass[MACS,english]{ntnuthesis/ntnuthesis}
+\documentclass[MIXD,english]{ntnuthesis/ntnuthesis}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}     % For utf8 encoded .tex files allows norwegian characters in the files. This can be dangerous if you change to a differnt editor.
@@ -105,13 +105,22 @@
 \listoftables
 \lstlistoflistings
 
-
+\include{inc/abstract}
+\include{inc/acknowledgments}
+\include{inc/preface}
 \include{inc/introduction} % includes latex files from the same directory
-\include{inc/packages} % could be called Methodology or methods or any filename 
-\include{inc/structure} % could be results
-\include{inc/implementation}
+%\include{inc/packages} % could be called Methodology or methods or any filename 
+%\include{inc/structure} % could be results
+%\include{inc/implementation}
+%\include{inc/methods}
+\include{inc/background}
+\include{inc/aim}
+\include{inc/methods}
+\include{inc/dataanalysis}
+\include{inc/result}
 \include{inc/discussion}
 \include{inc/conclusion}
+
 
 \ifthenelse{\boolean{HarvardCitations}}{%
 	\bibliographystyle{agsm} % used for Harvard style references. Names - Humanities & Interaction Design
