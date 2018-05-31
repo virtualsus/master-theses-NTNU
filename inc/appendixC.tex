@@ -2,5 +2,274 @@
 
 \lstset{language=Java}
 \begin{lstlisting}[caption = {}, label={lst:Java}]
+import com.leapmotion.leap.*;
+Controller leap;
+PImage backgroundImage;
+PImage MoleState1;
+PImage MoleState2;
+PImage MoleJump;
+PImage MoleGo;
+PImage MoleKaBoom;
+PImage Timer;
+PShape pointer;
+int cols, rows;
+int w = 80;
+int [] grid; //one dimension array
+int windowWidth = 1200;
+int windowHeight = 800;
+int state = 0;
+int [][] gridArray = new int [15][10];
+int countOK = 0;
+int countKaBoom = 0;
+int stateEnd = 0;
+int counterState = 0; //status for timer
+int counterTouching =0;
 
+void setup()
+{
+  size(1200, 800);//(1440, 960);
+  
+  backgroundImage = loadImage("Mole-in-the-hole-800x1200-GRIDinBack.jpg");
+  backgroundImage.resize(1200, 800);
+  MoleState1= loadImage("MoleState1.png");
+  MoleState2= loadImage("MoleState2.png");
+  MoleJump = loadImage("MoleJump.png");
+  MoleGo = loadImage("MoleGo.png");
+  MoleKaBoom = loadImage("MoleKaBoom.png");
+  Timer = loadImage("timer.png");
+
+  pointer = createShape(ELLIPSE, 0, 0, 40, 40);
+  pointer.setFill(color(127, 0, 0));
+
+  leap = new Controller();
+}
+void draw()
+{
+  background(backgroundImage);
+
+  //KaBoom counter & timer
+  CounterKaBoom();
+  Timer(0);// state 0 , not startet
+  image(MoleKaBoom, 30, 50);
+  image(Timer, 30, 150);
+
+  InteractionBox iBox = leap.frame().interactionBox();
+  Pointable pointable = leap.frame().pointables().frontmost();
+
+  Vector normalizedPosition = iBox.normalizePoint(pointable.stabilizedTipPosition());
+  float pixelX = normalizedPosition.getX() * windowWidth;
+  float pixelY = windowHeight - normalizedPosition.getY() * windowHeight;
+  int cx = (int) pixelX - 10;
+  int cy = (int) pixelY - 100;
+
+  cols = width/w;
+  rows = height/w;
+  
+  Finger finger = new Finger(pointable);
+  if(finger.isExtended())
+  {
+    Timer(1);
+  }
+  
+  //creates grid
+  for (int j = 0; j< rows; j++)
+  {
+    for (int i =0; i< cols; i++)
+    {
+      int x = i*w;
+      int y = j*w;
+
+
+      Pointable.Zone fingerzone = pointable.touchZone();
+
+      if (state ==0) //state 0 means , do the first block of code - move the pointer to maul and poke him
+      {
+       if (counterTouching < 5000)//dersom touches are less than x, repeat the following code
+        {
+         
+          shape(pointer, cx, cy);
+          
+          // println("State3: " + state);   
+          if (fingerzone != Pointable.Zone.ZONE_TOUCHING )//start this code if the finger is at 80/480 ((x == 80 && y==480 &&)
+          {
+            
+            show(MoleState1);
+          }
+          if (cx >=80 && cx <=160 && cy >= 480 && cy <= 560)
+          {
+            // image(MoleState2, 80, 480);
+            switch (pointable.touchZone()) {
+            case ZONE_NONE:
+              //Handle distant pointable
+              image(MoleState1, 80, 480);
+              break;
+            case ZONE_HOVERING:
+              //Handle pointable near touch plane
+              hide(MoleState1);
+              image(MoleState2, 80, 480);
+              break;
+            case ZONE_TOUCHING:
+              //Handle pointable penetrating touch plane
+              //println(count);
+              counterTouching = counterTouching + 1;
+              image(MoleJump, 80, 480); //mole pic nr 3
+               println("touching: " + counterTouching);
+             // println("State3: " + state);
+              break;
+            default:
+              //Handle error cases...
+              break;
+            }//end switch
+          }
+        
+        }
+        else//counterTouching is 2 or more
+        {
+            state = 1;
+
+        }
+      }//end if state
+
+    }
+  }
+  if (state == 1)
+  {
+
+    gridArray[1][6] = 1;//start cell
+    gridArray[1][5]= 1;//border cell from start cell
+    gridArray[1][7]= 1;//border cell from start cell
+    gridArray[2][6] = 1;
+    gridArray[3][6] = 1;
+    gridArray[3][7] = 1;
+    gridArray[4][7] = 1;
+    gridArray[5][7] = 1;
+    gridArray[5][6] = 1;
+    gridArray[5][5] = 1;
+    gridArray[5][4] = 1;
+    gridArray[6][4] = 1;
+    gridArray[7][4] = 1;
+    gridArray[7][5] = 1;
+    gridArray[7][6] = 1;
+    gridArray[8][6] = 1;
+    gridArray[8][7] = 1;
+    gridArray[9][7] = 1;
+    gridArray[10][7] = 1;
+    gridArray[10][6] = 1;
+    gridArray[11][6] = 1;
+    gridArray[11][5] = 1;
+    gridArray[11][4] = 1;
+    gridArray[10][4] = 1;
+    gridArray[4][9] = 1;
+    gridArray[9][4] = 1;
+    gridArray[9][3] = 1;
+    gridArray[9][2] = 2;//end Cell
+
+    int coordX = Math.max(Math.min(cx/80, 14), 0);//fixes out of arrayoutofboundary
+    int coordY = Math.max(Math.min(cy/80, 9), 0);
+
+
+    if (coordX == 9 && coordY == 2) // End cell
+    {
+      countOK++;
+      println("TEST"+ coordX + " " +coordY);
+      println("HURRRA");
+      stateEnd = 1;
+      setHide(true, MoleGo);
+      image(MoleJump, 720, 160);
+      noLoop();
+    } else if (gridArray[coordX][coordY] == 1) // Legal
+    {
+      countOK++;
+     // println("OK:" + countOK);
+      
+      image(MoleGo, cx, cy);
+    } else // Illegal
+    {
+      countKaBoom++;
+     // println("KaBOOM:" + countKaBoom);
+       image(MoleGo, cx, cy);
+    }
+
+    if (stateEnd == 1)
+    {
+       fill(255, 255, 0);
+       text("HURRA!", 600, 200); 
+      textColor1();
+    }
+  }//end state 1
+}//end draw
+
+
+void show(PImage img)
+{
+  setHide(false, img);
+}
+void hide(PImage img)
+{
+  setHide(true, img);
+}
+void setHide(boolean hideMole, PImage img)
+{
+  if (hideMole == false && img == MoleState1 )
+  {
+    image(MoleState1, 80, 480);
+  } 
+  if (hideMole == false && img == MoleState2 )
+  {
+    image(MoleState2, 80, 480);
+  } 
+  if (hideMole == false && img == MoleGo )
+  {
+    image(MoleGo, 720, 240);
+  } else
+  {
+    hideMole = true;
+    //need to hide the mole behind the background.
+  }
+}
+
+void textColor1()
+{
+  textSize(100);
+  fill(255, 255, 0);
+  text("HURRA!", 600, 160); //what is a proper feedback for a child? picture/text
+}
+void CounterKaBoom()
+{
+
+  text("Dunk: " + countKaBoom, 110, 120);
+  fill(255, 255, 255);
+  textSize(20);
+}
+
+void Timer(int startTimer)
+{
+
+  if (startTimer == 1)
+  {
+    int currentMillis = millis();
+    setSeconds(currentMillis);
+    setMinutes(currentMillis);
+  }
+  text("Løpetid: " +  getMinutes() +":" +  getSeconds(), 110, 200);
+}
+
+int totalSeconds =0;
+int totalMinutes  =0;
+void setSeconds(int milliseconds)
+{
+  totalSeconds = (milliseconds / 1000) % 60 ;//millis/1000;
+}
+int getSeconds()
+{
+  return totalSeconds;
+}
+void setMinutes(int milliseconds)
+{   
+  totalMinutes = ((milliseconds / (1000*60)) % 60);// (seconds/1000)/60;
+}
+int getMinutes()
+{
+  return totalMinutes;
+}
 \end{lstlisting}
