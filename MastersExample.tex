@@ -30,7 +30,7 @@
 \usepackage{booktabs}
 \usepackage{gnuplottex} %miktex option if using miktex on windows
 \usepackage{rotating}
-
+\usepackage{pdfpages}
 
 \definecolor{darkgreen}{rgb}{0,0.5,0}
 \definecolor{darkred}{rgb}{0.5,0.0,0}
@@ -117,6 +117,7 @@
 \include{inc/aim}
 \include{inc/methods}
 \include{inc/dataanalysis}
+\include{inc/dataanalysisV2}
 %\include{inc/result}
 \include{inc/discussion}
 \include{inc/conclusion}
@@ -128,10 +129,15 @@
 	\bibliographystyle{ntnuthesis/ntnuthesis} %used for Vancover style references. Numbers - Computer Science & Physics
 }
 
-\bibliography{MastersExample}
+\bibliography{MyBibLibrary}
 
 \appendix
 \include{inc/rawdata}
+%\includepdf[pages=1]{figures/consentformminor}
+\include{inc/appendixB}
 %\include{inc/timetable}
+\includepdf[pages=1]{figures/AgilityTestPage1}
+\includepdf[pages=1]{figures/AgilityTestPage2}
+\include{inc/appendixC}
 
 \end{document}

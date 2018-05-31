@@ -25,9 +25,9 @@ To conclude, evaluation of children's motor performance may not be a sufficient 
 \label{sec:prototype}
 
 
-\subsection{Leap Motion Device}
+\subsection{The Leap Motion device}
 
-The Leap Motion device was purchased second hand on Finn. \footnote{www.finn.no} The V2 desktop tracking installation files which included the SDK version v2.3.1 were downloaded from Leap Motion website. \footnote{ www.leapmotion.com} The installation was straightforward and the device could immediately be connected to the PC and used with the Leap Motion visualizer.
+The Leap Motion device was purchased second hand on Finn. \footnote{www.finn.no} The V2 desktop tracking installation files which included the SDK version v2.3.1 were downloaded from Leap Motion website. \footnote{www.leapmotion.com} The installation was straightforward and the device could immediately be connected to the PC and used with the Leap Motion visualizer.
 
 \begin{figure}[h]  %t top, b bottom, p page | you can also use h to try to get the figure to appear at the current location
   \centering
@@ -112,7 +112,7 @@ A flow diagram was created for a better understanding of the design process and 
 \subsection{Prototype implementation}
 
 In Processing, in order to make an animation or a interactive program, a predefined structure is used which includes a setup() and a draw() function. The setup() function runs only ones at the start whereas the draw() function loops continuously until the program is terminated or the noLoop() command appears in the code.
-In the setup() function, the initial environment property as for instance the size of the canvas is defined  (size()).  In the draw() function, code that is meant to run continuously is defined here, like for instance the background() property. 
+In the setup() function, the initial environment property as for instance the size of the canvas is defined  (size()). In the draw() function, code that is meant to run continuously is defined here, like for instance the background() property. 
 
 The framework would look likes this:
 \lstset{frameround=tttt}
@@ -141,14 +141,14 @@ import com.leapmotion.leap.*;
 To connect to the Leap motion device a controller object was created
 
 \lstset{language=Java}
-\begin{lstlisting}[caption = {The code for touch zone}, label={lst:Java}]
+\begin{lstlisting}[caption = {Controller object}, label={lst:Java}]
 Controller leap;
 \end{lstlisting}
 
 In setup() the controller was initialized as followed in order to establish a connection.
 
 \lstset{language=Java}
-\begin{lstlisting}[caption = {The code for touch zone}, label={lst:Java}]
+\begin{lstlisting}[caption = {Initialization of controller object}, label={lst:Java}]
 leap = new Controller();
 \end{lstlisting}
 
@@ -156,7 +156,7 @@ In order to make it easier to map position in the Leap Motion coordinate system 
 
 \lstset{language=Java}
 \lstset{breaklines=true,postbreak=\mbox{{\color{blue}\tiny$\rightarrow$}}}
-\begin{lstlisting}[caption = {The code for touch zone}, label={lst:Java}]
+\begin{lstlisting}[caption = {InteractionBox object}, label={lst:Java}]
 
 InteractionBox iBox = leap.frame().interactionBox();
 Pointable pointable = leap.frame().pointables().frontmost();
@@ -171,13 +171,13 @@ int cy = (int) pixelY - 100;
 Finger are recognize by the pointable class. The pointable.Zone defines the state of the current pointable object.
 
 \lstset{language=Java}
-\begin{lstlisting}[caption = {The code for touch zone}, label={lst:Java}]
+\begin{lstlisting}[caption = {Touch zone}, label={lst:Java}]
  Pointable.Zone fingerzone = pointable.touchZone();
 \end{lstlisting}
 
 The touch zone is defined by three states:(see Leap Motion API reference for more information)
 \begin{enumerate}
-    \item ZONE\_NONE (pointable distant from the touch panel)
+    \item ZONE\_NONE (pointable distance from the touch panel)
     \item ZONE\_HOVERING (is near the touch plane)
     \item ZONE\_TOUCHING (penetrates the touch plane)
 \end{enumerate}
@@ -186,7 +186,7 @@ The touch zone is defined by three states:(see Leap Motion API reference for mor
 
 
 \lstset{language=Java}
-\begin{lstlisting}[caption = {The code for touch zone}, label={lst:Java}]
+\begin{lstlisting}[caption = {Touch zone and mole state}, label={lst:Java}]
 
             switch (pointable.touchZone()){
             case ZONE_NONE:
@@ -213,7 +213,7 @@ The touch zone is defined by three states:(see Leap Motion API reference for mor
 A new finger object is created and initialized that starts the timer:
 
 \lstset{language=Java}
-\begin{lstlisting}[caption = {The code for touch zone}, label={lst:Java}]
+\begin{lstlisting}[caption = {Finger object, Gesture: extended finger}, label={lst:Java}]
   Finger finger = new Finger(pointable);
   if(finger.isExtended())
   {
@@ -255,11 +255,11 @@ The pointer is activated by stretching the finger and pointing forward. The poin
 
 
 
-\subsection{Limitation}
-time limit
-money? budget
-poor code quality
-equipment limitation
+%\subsection{Limitation}
+%time limit
+%money? budget
+%poor code quality
+%equipment limitation
 
 \section{Experiment }
 \label{sec:experiment}
@@ -271,9 +271,9 @@ equipment limitation
 The target group for this study were children between two and 13 years of age. A suitable combination of gender distribution would be appropriate for the usability test. For this purpose, convenience sampling of children that were readily available represent a subset of the population. A social network as recruiting source was substantial in this situation. Parents who saw the value of this study wanted to contribute and volunteered their children. 
 The motive behind such young target group is, to observe and analyze if the child understands the idea a touch-less system and the ability to handle it. 
 
-According to www.usertest.com, it is recommend to divide children into specific age groups. The main reason for that is the remarkable differences in development of cognitive, physical and social skills. For instance, fine-motor skill are less developed in a 3 year old child than i an a 10 year old. The user group in this study can be divided into group 1 (age 2 - 4), group 2 (age 5 - 8) and group 3 (age 9 -1).
+According to \cite{Gallavin2015}, it is recommend to divide children into specific age groups. The main reason for that is the remarkable differences in development of cognitive, physical and social skills. For instance, fine-motor skill are less developed in a 3 year old child than i an a 10 year old. The user group in this study can be divided into group 1 (age 2 - 4), group 2 (age 5 - 8) and group 3 (age 9 -1).
 
-The planed number of participant for the usability study was between nine and ten children. Since the study focused on qualitative data collection and Nielsen recommends 5 users for usability test, the amount of users were sufficient for this study. That would be a sufficient backup in case a child did not want to cooperate or if a child got ill. 
+The planed number of participant for the usability study was between nine and ten children. Since the study focused on qualitative data collection and Nielsen \cite{Nielsen2012} recommends 5 users for usability test, the amount of users were sufficient for this study. That would be a sufficient backup in case a child did not want to cooperate or if a child got ill. 
 
 
 \subsection{Test environment and implementation strategy}
@@ -288,9 +288,9 @@ The time duration needed to complete the task was estimated to 15 minutes. That 
 \subsection{Compensation}
 
 According to Nielsen [1998], compensating test users is common. The value of the compensation depends on the type of study and participants. However, he suggested a nice toy or 10 - 15\$ for children or students.
-In this study, every child got a small compensation for their contribution. A collection of toys, games, book and other things were offered to choose from. This showed to be a good motivational tool and the children were eagerly to participate and accomplished the task.  
+In this study, every child got a small compensation for their contribution. A collection of toys, games, book and other things were offered to choose from. This showed to be a good motivational tool and the children were eagerly to participate and accomplished the task \cite{Nielsen1998}.
 
-https://www.nngroup.com/articles/when-to-outsource-recruiting-test-users/
+%https://www.nngroup.com/articles/when-to-outsource-recruiting-test-users/
 
 
 
@@ -322,13 +322,13 @@ Studies involving human participants require considerations of ethical aspects. 
 During the experiment, the children were never forced to carry out the task. All involvement was based on voluntary participation. If for any reason a child wasn't cooperative the experiences was canceled immediately. 
 It is important to point out that the study didn't collect any personal data. Every participant was registered with a consecutive number which would not reveal the participant identity. The collected data was kept confidential. Only the overall outcome was used for further analysis in order to confirm the hypothesis.  
 
-A concern form was handed to the parents to confirm and sign. The form was downloaded from www.usability.gov and modified for this study. (see attached concern form)
-
+A concern form was handed to the parents to confirm and sign. The form was downloaded from \cite{Usabilitygov} and modified for this study.
+%https://www.usability.gov/how-to-and-tools/resources/templates/consent-form-minor.html
 
 \subsection{Pilot test}
 
-A pilot test was conducted before the real test in order to fine-tune the prototype and test routine and to check if there a other issues to be considered. 
-https://www.nngroup.com/articles/pilot-testing/
+A pilot test was conducted before the real test in order to fine-tune the prototype and test routine and to check if there a other issues to be considered \cite{schade2015}.
+%https://www.nngroup.com/articles/pilot-testing/
 
 The person recruited for the pilot test was a young girl in her early teens. She had no pre-experience in hands free gesture applications and was therefore suitable for the task.
 The pilot test was conducted some days before the real test.
@@ -386,5 +386,5 @@ The gathered information and data is evaluated and presented in chapter~\ref{cha
 
 \section{Observations}
 
-Observation is a common scientific method and often used in research projects.[reference] 
+Observation is a common scientific method and often used in research projects \cite{Leedy2014}. 
 Observation during this experiment focused on the child's behaviour and reaction during the experiment. Additionally,the ability to perform the task and how much assistance was needed was recorded.
